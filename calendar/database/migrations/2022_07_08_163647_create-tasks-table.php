@@ -20,7 +20,6 @@ class CreateTasksTable extends Migration
 			$table->date("task_date");
 			$table->time("start_time")->nullable();
 			$table->time("finish_time")->nullable();
-			$table->integer("delete_flag")->default(0);
 			$table->timestamps();
 		});
 	}
