@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Task;
 use Exception;
 use Illuminate\Http\Request;
+use App\Library\Validate\Validate;
 
 class CalendarController extends Controller
 {
@@ -47,6 +48,17 @@ class CalendarController extends Controller
 	 */
 	public function Register(Request $req)
 	{
+		// バリデーション
+		$error_mess = Validate::ValidateTaskInput($req->all());
+		if (
+			!empty($error_mess["title"])
+			|| !empty($error_mess["desc"])
+			|| !empty($error_mess["start_time"])
+			|| !empty($error_mess["finish_time"])
+		) {
+			return $error_mess;
+		}
+
 		try {
 			$task = Task::create($req->all());
 			return response()->json($task, 201);
@@ -64,6 +76,17 @@ class CalendarController extends Controller
 	 */
 	public function Update(Request $req, $id)
 	{
+		// バリデーション
+		$error_mess = Validate::ValidateTaskInput($req->all());
+		if (
+			!empty($error_mess["title"])
+			|| !empty($error_mess["desc"])
+			|| !empty($error_mess["start_time"])
+			|| !empty($error_mess["finish_time"])
+		) {
+			return $error_mess;
+		}
+
 		try {
 			$task = Task::find($id);
 			if (isset($task)) {
