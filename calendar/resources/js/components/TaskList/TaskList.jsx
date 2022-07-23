@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Task from "./Task";
-import AddTaskButton from "./AddTaskButton";
 import axios from "axios";
 
-export default function TaskList({ generalDate, setGeneralDate }) {
+export default function TaskList({ generalDate, setIsVisibleTaskForm }) {
     const [tasks, setTasks] = useState([]);
 
     // タスクの取得
@@ -23,12 +22,23 @@ export default function TaskList({ generalDate, setGeneralDate }) {
         fetchTasks();
     }, [generalDate]);
 
+    // クリックで非表示
+    const clickVisible = () => {
+        setIsVisibleTaskForm(true);
+    };
+
     return (
         <div className="taskList">
-            {tasks.map((task) => (
-                <Task task={task} key={task.id} />
-            ))}
-            <AddTaskButton />
+            <div className="taskListBox">
+                <div className="taskWrapper">
+                    {tasks.map((task) => (
+                        <Task task={task} key={task.id} />
+                    ))}
+                </div>
+                <button className="addTaskButton" onClick={clickVisible}>
+                    +
+                </button>
+            </div>
         </div>
     );
 }

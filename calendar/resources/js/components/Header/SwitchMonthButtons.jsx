@@ -1,5 +1,7 @@
 import React from "react";
 import moment from "moment";
+import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
+import ArrowCircleLeftIcon from "@mui/icons-material/ArrowCircleLeft";
 
 export default function SwitchMonthButtons({ generalDate, setGeneralDate }) {
     /**
@@ -24,8 +26,12 @@ export default function SwitchMonthButtons({ generalDate, setGeneralDate }) {
 
     return (
         <div className="switchMonthButtons">
-            <button onClick={clickBackButton}>BACK</button>
-            <button onClick={clickNextButton}>NEXT</button>
+            <button onClick={clickBackButton} className="backButton">
+                <ArrowCircleLeftIcon fontSize="large" />
+            </button>
+            <button onClick={clickNextButton} className="nextButton">
+                <ArrowCircleRightIcon fontSize="large" />
+            </button>
         </div>
     );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import moment from "moment";
 
 export default function Day({ day, generalDate, setGeneralDate }) {
+    // 日にちクリックイベント
     const clickDay = (day) => {
         // 数値でない場合処理を終了
         if (isNaN(day)) return;
@@ -14,12 +15,23 @@ export default function Day({ day, generalDate, setGeneralDate }) {
         ).format("YYYY-MM-DD");
         setGeneralDate(newDate);
     };
+
+    // CSSクラス付与
+    const grantClassName = () => {
+        let className = "";
+        let selectedDay = String(generalDate).split("-")[2];
+
+        if (Number(day) != 0) {
+            className = Number(selectedDay) == Number(day) ? "selected" : "day";
+        } else {
+            className = "hidden";
+        }
+        return className;
+    };
+
     return (
-        <div
-            className={!isNaN(day) ? "day" : "hidden"}
-            onClick={() => clickDay(day)}
-        >
-            <span>{day}</span>
-        </div>
+        <span className={grantClassName()} onClick={() => clickDay(day)}>
+            {day}
+        </span>
     );
 }

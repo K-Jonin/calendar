@@ -17,7 +17,7 @@ export default function Calendar({ generalDate, setGeneralDate }) {
         const days = [...Array(42)].map((_, i) =>
             i >= dayOfTheWeekNum && i < dateCountByMonth + dayOfTheWeekNum
                 ? i - dayOfTheWeekNum + 1
-                : " "
+                : 0
         );
         // 日にちを週ごとに分割し挿入
         setDaysOfTheWeek(

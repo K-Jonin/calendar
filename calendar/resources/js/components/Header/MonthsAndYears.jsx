@@ -17,14 +17,16 @@ export default function MonthsAndYears({ generalDate }) {
         "DECEMBER",
     ];
     return (
-        <div>
+        <>
             <h2>
-                <span className="year">{splitDate[0]}</span>
-                <span className="month">
-                    {months[Number(splitDate[1] - 1)]}
-                </span>
-                <span className="monthNum">{splitDate[1]}</span>
+                <div>
+                    <span className="month">
+                        {months[Number(splitDate[1] - 1)]}
+                    </span>
+                    <span className="year">{splitDate[0]}</span>
+                </div>
+                <span className="monthNum">{Number(splitDate[1])}</span>
             </h2>
-        </div>
+        </>
     );
 }

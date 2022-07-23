@@ -1,0 +1,304 @@
+/* ===== 初期化 ====== */
+* {
+	margin: 0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+
+li {
+	list-style-type: none;
+	list-style-position: outside;
+}
+
+img {
+	vertical-align: middle;
+	max-width: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+.button {
+	// 初期化
+	display: block;
+	background: none;
+	border: none;
+	outline: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+	position: absolute;
+	// 共通スタイル
+	top: 10px;
+	right: 10px;
+	width: 35px;
+	height: 35px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	box-shadow: 2px 2px 5px 2px #888;
+	border-radius: 50%;
+	transition: .2s;
+	cursor: pointer;
+}
+.button-hover {
+	transform: translate(1px, 1px);
+	box-shadow: none;
+}
+
+/* ===== スタイル ====== */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:display=swap');
+
+// color
+$main-color: #D9CCCC;
+$sun: #F23005;
+$sat: #049DD9;
+$monthNum: #EFFD70;
+
+// fonts
+$noto: 'Noto Sans JP', sans-seri;
+
+body{
+	background-color: $main-color;
+	#app {
+		display: grid;
+		grid-template-columns: 70% 30%;
+		grid-template-rows: 30vh 70vh;
+		.header {
+			grid-column: 1 / 2;
+			grid-row: 1 / 2;
+			position: relative;
+			h2 {
+				width: 100%;
+				height: 100%;
+				position: relative;
+				span{
+					display: block;
+				}
+				div{
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					text-align: center;
+					transform: translate(-50%, -50%);
+					font-family: $noto;
+					z-index: 10;
+					.month {
+						font-size: 2.5rem;
+						letter-spacing: 18px;
+					}
+					.year {
+						margin-top: -8px;
+						font-size: 1.5rem;
+						letter-spacing: 12px;
+					}
+				}
+				.monthNum {
+					position: absolute;
+					bottom: 0;
+					left: 50%;
+					transform: translateX(-50%);
+					font-family: Century;
+					font-size: 180px;
+					// font-weight: 100;
+					color: $monthNum;
+					z-index: 1;
+				}
+			}
+			.switchMonthButtons {
+				width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				button {
+					display: block;
+					background: none;
+					border: none;
+					cursor: pointer;
+				}
+				.backButton {
+					margin-left: 180px;
+				}
+				.nextButton {
+					margin-right: 180px;
+				}
+			}
+		}
+		.calendar {
+			grid-column: 1 / 2;
+			grid-row: 2 / 3;
+			table {
+				width: 82%;
+				height: 95%;
+				margin: 0 auto;
+				thead{
+					height: 14.28%;
+					tr{
+						height: 100%;
+					}
+				}
+				tbody{
+					height: 85.68%;
+					tr{
+						height: 16.66%;
+					}
+				}
+				tr{
+					width: 100%;
+					display: flex;
+					justify-content: space-around;
+				}
+				th, td {
+					width: calc(14.29% - 10px);
+					height: 100%;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					font-family: $noto;
+				}
+				th {
+					font-size: 1.5rem;
+					font-weight: 600;
+				}
+				td {
+					.day{
+						width: 50px;
+						height: 50px;
+						display: block;
+						text-align: center;
+						line-height: 50px;
+						font-size: 1.4rem;
+						font-weight: 400;
+						background-color: $main-color;
+						border-radius: 50%;
+						cursor: pointer;
+						transition: .2s;
+					}
+					.selected {
+						@extend .day;
+						box-shadow: 1px 1px 2px 2px #999;
+						transform: translate(-2px, -2px);
+					}
+					.day:hover {
+						box-shadow: 1px 1px 2px 2px #999;
+						transform: translate(-2px, -2px);
+					}
+					.day:active {
+						box-shadow: none;
+						transform: translate(0px, 0px);
+					}
+					.hidden {
+						display: none;
+					}
+				}
+				.sunday {
+					color: $sun;
+				}
+				.saturday {
+					color: $sat;
+				}
+			}
+		}
+		.taskList {
+			grid-column: 2 / 3;
+			grid-row: 1 / 3;
+			display: flex;
+			align-items: center;
+			.taskListBox {
+				width: 70%;
+				height: 88%;
+				position: relative;
+				border: solid 3px #555;
+				border-radius: 10px;
+				.taskWrapper {
+					width: 90%;
+					margin: 55px auto 0;
+					height: calc(100% - 55px);
+					overflow-y: scroll;
+					-ms-overflow-style: none;
+					scrollbar-width: none;
+					.task {
+						width: 98%;
+						height: 60px;
+						margin-bottom: 15px;
+						text-align: center;
+						line-height: 60px;
+						font-family: $noto;
+						font-size: 1.1rem;
+						font-weight: 600;
+						letter-spacing: 1px;
+						background-color: #fff;
+						box-shadow: 2px 4px 4px 1px #999;
+						border-radius: 15px;
+						transition: .2s;
+						cursor: pointer;
+					}
+					.task:hover {
+						transform: translate(1px, 1px);
+						box-shadow: none;
+					}
+				}
+				.taskWrapper::-webkit-scrollbar {
+					display: none !important;
+				}
+				.addTaskButton {
+					@extend .button;
+					font-size: 24px;
+					font-weight: 600;
+					color: $main-color;
+					background-color: #000;
+				}
+				.addTaskButton:hover {
+					@extend .button-hover;
+				}
+			}
+		}
+		.taskForm {
+			width: 100%;
+			height: 100vh;
+			position: fixed;
+			top: 0;
+			left: 0;
+			z-index: 50;
+			.bgDark {
+				width: 100%;
+				height: 100vh;
+				background-color: rgba(0, 0, 0, .6);
+			}
+			.taskFormWrapper {
+				width: 500px;
+				height: 500px;
+				padding: 10px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #fff;
+				border-radius: 20px;
+				z-index: 100;
+				.closeButton {
+					@extend .button;
+					margin: 15px;
+					font-size: 18px;
+					font-weight: 600;
+					color: #fff;
+					background-color: #333;
+				}
+				.closeButton:hover {
+					@extend .button-hover;
+				}
+			}
+		}
+		.visible {
+			display: block;
+		}
+		.invisible {
+			display: none;
+		}
+	}
+}
