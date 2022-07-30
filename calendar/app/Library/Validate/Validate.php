@@ -15,46 +15,52 @@ class Validate
 	static public function ValidateTaskInput($reqAll)
 	{
 		$error_mess = [
-			"title" => "",
-			"desc" => "",
-			"start_time" => "",
-			"finish_time" => "",
+			"title" => ["msg" => "", "exists" => false],
+			"desc" => ["msg" => "", "exists" => false],
+			"start_time" => ["msg" => "", "exists" => false],
+			"finish_time" => ["msg" => "", "exists" => false],
 		];
 
 		// タイトル
 		if (empty($reqAll["title"])) {
-			$error_mess["title"] = "タイトルが未入力です";
+			$error_mess["title"]["msg"] = "タイトルが未入力です";
+			$error_mess["title"]["exists"] = true;
 		} elseif (20 < mb_strlen($reqAll["title"])) {
-			$error_mess["title"] = "タイトルは20文字以内で入力してください";
+			$error_mess["title"]["msg"] = "タイトルは20文字以内で入力してください";
+			$error_mess["title"]["exists"] = true;
 		}
 
 		// タスク説明
 		if (!empty($reqAll["desc"])) {
-			$error_mess["desc"] = 255 < mb_strlen($reqAll["desc"]) ? "説明は255文字以内で入力してください" : "";
+			$error_mess["desc"]["msg"] = 255 < mb_strlen($reqAll["desc"]) ? "説明は255文字以内で入力してください" : "";
+			$error_mess["desc"]["exists"] = true;
 		}
 
 		// 開始時刻
 		if (!empty($reqAll["start_time"])) {
-			$error_mess["start_time"] = Validate::VaridateTime($reqAll["start_time"]);
+			$error_mess["start_time"]["msg"] = Validate::VaridateTime($reqAll["start_time"]);
+			$error_mess["start_time"]["exists"] = true;
 		}
 
 		// 終了時刻
 		if (!empty($reqAll["finish_time"])) {
-			$error_mess["finish_time"] = Validate::VaridateTime($reqAll["finish_time"]);
+			$error_mess["finish_time"]["msg"] = Validate::VaridateTime($reqAll["finish_time"]);
+			$error_mess["finish_time"]["exists"] = true;
 		}
 
 		// 時刻設定の整合性チェック
 		if (
 			!empty($reqAll["start_time"])
 			&& !empty($reqAll["finish_time"])
-			&& empty($error_mess["start_time"])
-			&& empty($error_mess["finish_time"])
+			&& empty($error_mess["start_time"]["msg"])
+			&& empty($error_mess["finish_time"]["msg"])
 		) {
 			$start_time = new DateTime($reqAll["start_time"]);
 			$finish_time = new DateTime($reqAll["finish_time"]);
 
 			if ($finish_time < $start_time) {
-				$error_mess["finish_time"] = "開始時刻以降に終了時刻を設定して下さい";
+				$error_mess["finish_time"]["msg"] = "開始時刻以降に終了時刻を設定して下さい";
+				$error_mess["finish_time"]["exists"] = true;
 			}
 		}
 

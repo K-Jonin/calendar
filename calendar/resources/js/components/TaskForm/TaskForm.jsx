@@ -6,17 +6,6 @@ export default function TaskForm({
     setIsVisibleTaskForm,
     generalDate,
 }) {
-    // エラーが存在するか
-    let [isExistsError, setIsExistsError] = useState(false);
-
-    // エラーメッセージを格納
-    const [errorMessage, setErrorMessage] = useState({
-        title: "",
-        desc: "",
-        start_time: "",
-        finish_time: "",
-    });
-
     // ポスト送信するデータを格納
     const [postData, setPostData] = useState({
         title: "",
@@ -26,11 +15,19 @@ export default function TaskForm({
         task_date: generalDate,
     });
 
+    // エラーメッセージを格納
+    const [errorMessage, setErrorMessage] = useState({
+        title: { msg: "", exists: false },
+        desc: { msg: "", exists: false },
+        start_time: { msg: "", exists: false },
+        finish_time: { msg: "", exists: false },
+    });
+
     // インプットの値が変化する度に更新
     const handleChangeInput = (e) => {
         setPostData({ ...postData, [e.target.name]: e.target.value });
-        if (isExistsError) {
-            setIsExistsError(validate(e.target.name, e.target.value));
+        if (true) {
+            setErrorMessage(validate(e.target.name, errorMessage));
         }
     };
 
@@ -43,12 +40,10 @@ export default function TaskForm({
             switch (result.status) {
                 case 201:
                     window.location.reload();
-                    isExistsError = false;
                     break;
                 case 202:
-                    console.log(postData);
+                    console.log(result.data);
                     setErrorMessage(result.data);
-                    setIsExistsError(true);
                     break;
                 case 500:
                     console.log("ERROR");
@@ -85,10 +80,12 @@ export default function TaskForm({
                         type="text"
                         name="title"
                         placeholder="タイトルを入力"
-                        className={isExistsError ? "error" : ""}
+                        className={errorMessage.title.exists ? "error" : ""}
                         onChange={(e) => handleChangeInput(e)}
                     />
-                    <span className="errorMessage">{errorMessage.title}</span>
+                    <span className="errorMessage">
+                        {errorMessage.title.msg}
+                    </span>
                 </p>
                 <p className="disc">
                     <label>説明</label>
@@ -97,9 +94,11 @@ export default function TaskForm({
                         cols="30"
                         rows="10"
                         onChange={(e) => handleChangeInput(e)}
-                        className={isExistsError ? "error" : ""}
+                        className={errorMessage.desc.exists ? "error" : ""}
                     ></textarea>
-                    <span className="errorMessage">{errorMessage.desc}</span>
+                    <span className="errorMessage">
+                        {errorMessage.desc.msg}
+                    </span>
                 </p>
                 <p>
                     <label>開始時刻</label>
@@ -108,10 +107,12 @@ export default function TaskForm({
                         name="start_time"
                         placeholder="例）00:00"
                         onChange={(e) => handleChangeInput(e)}
-                        className={isExistsError ? "error" : ""}
+                        className={
+                            errorMessage.start_time.exists ? "error" : ""
+                        }
                     />
                     <span className="errorMessage">
-                        {errorMessage.start_time}
+                        {errorMessage.start_time.msg}
                     </span>
                 </p>
                 <p>
@@ -121,10 +122,12 @@ export default function TaskForm({
                         name="finish_time"
                         placeholder="例）00:00"
                         onChange={(e) => handleChangeInput(e)}
-                        className={isExistsError ? "error" : ""}
+                        className={
+                            errorMessage.finish_time.exists ? "error" : ""
+                        }
                     />
                     <span className="errorMessage">
-                        {errorMessage.finish_time}
+                        {errorMessage.finish_time.msg}
                     </span>
                 </p>
                 <button type="submit">登録</button>
@@ -134,16 +137,25 @@ export default function TaskForm({
 }
 
 /**
- * エラー表示用の簡単なバリデーション
- *
+ * エラー表示後、入力に変更があれば該当フォームのエラー表示を無くす
+ * @param {String} targetName 該当フォームの名称
+ * @param {Array} errorMessage エラーメッセージ
+ * @returns {Array} エラーメッセージ
  */
-function validate(targetName, targetValue) {
+function validate(targetName, errorMessage) {
     switch (targetName) {
         case "title":
-            if (targetValue.length < 1) {
-                return true;
-            }
-        default:
-            return false;
+            errorMessage.title.exists = false;
+            break;
+        case "desc":
+            errorMessage.desc.exists = false;
+            break;
+        case "start_time":
+            errorMessage.start_time.exists = false;
+            break;
+        case "finish_time":
+            errorMessage.finish_time.exists = false;
+            break;
     }
+    return errorMessage;
 }
