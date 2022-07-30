@@ -17,6 +17,7 @@ export default function TaskForm({
 
     // エラーメッセージを格納
     const [errorMessage, setErrorMessage] = useState({
+        isExistsError: false,
         title: { msg: "", exists: false },
         desc: { msg: "", exists: false },
         start_time: { msg: "", exists: false },
@@ -26,7 +27,7 @@ export default function TaskForm({
     // インプットの値が変化する度に更新
     const handleChangeInput = (e) => {
         setPostData({ ...postData, [e.target.name]: e.target.value });
-        if (true) {
+        if (errorMessage.isExistsError) {
             setErrorMessage(validate(e.target.name, errorMessage));
         }
     };
@@ -156,6 +157,15 @@ function validate(targetName, errorMessage) {
         case "finish_time":
             errorMessage.finish_time.exists = false;
             break;
+    }
+
+    if (
+        !errorMessage.title.exists &&
+        !errorMessage.desc.exists &&
+        !errorMessage.start_time.exists &&
+        !errorMessage.finish_time.exists
+    ) {
+        errorMessage.isExistsError = false;
     }
     return errorMessage;
 }

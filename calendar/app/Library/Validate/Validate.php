@@ -15,6 +15,7 @@ class Validate
 	static public function ValidateTaskInput($reqAll)
 	{
 		$error_mess = [
+			"isExistsError" => false,
 			"title" => ["msg" => "", "exists" => false],
 			"desc" => ["msg" => "", "exists" => false],
 			"start_time" => ["msg" => "", "exists" => false],
@@ -62,6 +63,16 @@ class Validate
 				$error_mess["finish_time"]["msg"] = "開始時刻以降に終了時刻を設定して下さい";
 				$error_mess["finish_time"]["exists"] = true;
 			}
+		}
+
+		// エラーが存在するか
+		if (
+			$error_mess["title"]["exists"]
+			|| $error_mess["desc"]["exists"]
+			|| $error_mess["start_time"]["exists"]
+			|| $error_mess["finish_time"]["exists"]
+		) {
+			$error_mess["isExistsError"] = true;
 		}
 
 		return $error_mess;
