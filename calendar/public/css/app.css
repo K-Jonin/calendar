@@ -274,6 +274,9 @@ body #app .taskForm .taskFormWrapper .closeButton {
   color: #fff;
   background-color: #333;
 }
+body #app .taskForm .taskFormWrapper .error {
+  background-color: pink;
+}
 body #app .visible {
   display: block;
 }

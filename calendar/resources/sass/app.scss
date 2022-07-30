@@ -292,6 +292,9 @@ body{
 				.closeButton:hover {
 					@extend .button-hover;
 				}
+				.error {
+					background-color: pink;
+				}
 			}
 		}
 		.visible {

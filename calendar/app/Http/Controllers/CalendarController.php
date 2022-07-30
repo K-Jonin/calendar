@@ -56,7 +56,7 @@ class CalendarController extends Controller
 			|| !empty($error_mess["start_time"])
 			|| !empty($error_mess["finish_time"])
 		) {
-			return $error_mess;
+			return response()->json($error_mess, 202);
 		}
 
 		try {

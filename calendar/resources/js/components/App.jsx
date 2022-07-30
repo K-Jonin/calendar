@@ -7,9 +7,9 @@ import TaskList from "./TaskList/TaskList";
 
 export default function App() {
     // 日時情報
-    const [generalDate, setGeneralDate] = useState([
-        moment().format("YYYY-MM-DD"),
-    ]);
+    const [generalDate, setGeneralDate] = useState(
+        moment().format("YYYY-MM-DD")
+    );
     // タスクフォームの表示状態
     const [isVisibleTaskForm, setIsVisibleTaskForm] = useState(false);
 
@@ -28,6 +28,7 @@ export default function App() {
             <TaskForm
                 isVisibleTaskForm={isVisibleTaskForm}
                 setIsVisibleTaskForm={setIsVisibleTaskForm}
+                generalDate={generalDate}
             />
         </>
     );
