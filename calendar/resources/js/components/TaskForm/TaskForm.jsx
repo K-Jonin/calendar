@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 
 export default function TaskForm({
@@ -43,7 +43,6 @@ export default function TaskForm({
                     window.location.reload();
                     break;
                 case 202:
-                    console.log(result.data);
                     setErrorMessage(result.data);
                     break;
                 case 500:
@@ -58,6 +57,8 @@ export default function TaskForm({
     // クリックで非表示
     const clickInvisible = () => {
         setIsVisibleTaskForm(false);
+        setPostData(initiarizeObject(postData));
+        setErrorMessage(initiarizeObjectForErrorMessage(errorMessage));
     };
 
     return (
@@ -83,6 +84,7 @@ export default function TaskForm({
                         placeholder="タイトルを入力"
                         className={errorMessage.title.exists ? "error" : ""}
                         onChange={(e) => handleChangeInput(e)}
+                        value={postData.title}
                     />
                     <span className="errorMessage">
                         {errorMessage.title.msg}
@@ -168,4 +170,32 @@ function validate(targetName, errorMessage) {
         errorMessage.isExistsError = false;
     }
     return errorMessage;
+}
+
+/**
+ * オブジェクトを初期化
+ * @param {Object} object 初期化前のオブジェクト
+ * @returns {Object} 初期化されたオブジェクト
+ */
+function initiarizeObject(object) {
+    Object.keys(object).map(
+        (key) => (object[key] = key !== "task_date" ? "" : object.task_date)
+    );
+    return object;
+}
+
+/**
+ * エラーメッセージオブジェクトを初期化
+ * @param {Object} object 初期化前のオブジェクト
+ * @returns {Object} 初期化されたオブジェクト
+ */
+function initiarizeObjectForErrorMessage(object) {
+    Object.keys(object).map((key) =>
+        key === "isExistsError"
+            ? (object.isExistsError = false)
+            : Object.keys(object[key]).map(
+                  (key2) => (object[key][key2] = key2 === "msg" ? "" : false)
+              )
+    );
+    return object;
 }
