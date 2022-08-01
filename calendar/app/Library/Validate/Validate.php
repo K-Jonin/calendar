@@ -3,6 +3,7 @@
 namespace App\Library\Validate;
 
 use DateTime;
+use Illuminate\Support\Facades\Log;
 
 class Validate
 {
@@ -14,6 +15,7 @@ class Validate
 	 */
 	static public function ValidateTaskInput($reqAll)
 	{
+		// エラーメッセージ
 		$error_mess = [
 			"isExistsError" => false,
 			"title" => ["msg" => "", "exists" => false],
@@ -26,27 +28,33 @@ class Validate
 		if (empty($reqAll["title"])) {
 			$error_mess["title"]["msg"] = "タイトルが未入力です";
 			$error_mess["title"]["exists"] = true;
-		} elseif (20 < mb_strlen($reqAll["title"])) {
+		} elseif (20 < mb_strlen(trim($reqAll["title"]))) {
 			$error_mess["title"]["msg"] = "タイトルは20文字以内で入力してください";
 			$error_mess["title"]["exists"] = true;
 		}
 
 		// タスク説明
 		if (!empty($reqAll["desc"])) {
-			$error_mess["desc"]["msg"] = 255 < mb_strlen($reqAll["desc"]) ? "説明は255文字以内で入力してください" : "";
-			$error_mess["desc"]["exists"] = true;
+			if (255 < mb_strlen(trim($reqAll["desc"]))) {
+				$error_mess["desc"]["msg"] = "説明は255文字以内で入力してください";
+				$error_mess["desc"]["exists"] = true;
+			}
 		}
 
 		// 開始時刻
 		if (!empty($reqAll["start_time"])) {
-			$error_mess["start_time"]["msg"] = Validate::VaridateTime($reqAll["start_time"]);
-			$error_mess["start_time"]["exists"] = true;
+			if (preg_match("/^([01][0-9]|2[0-3]):[0-5][0-9]$/", trim($reqAll["start_time"]))) {
+				$error_mess["start_time"]["msg"] = "正しい形式で入力してください。例) 00:00";
+				$error_mess["start_time"]["exists"] = true;
+			}
 		}
 
 		// 終了時刻
 		if (!empty($reqAll["finish_time"])) {
-			$error_mess["finish_time"]["msg"] = Validate::VaridateTime($reqAll["finish_time"]);
-			$error_mess["finish_time"]["exists"] = true;
+			if (preg_match("/^([01][0-9]|2[0-3]):[0-5][0-9]$/", trim($reqAll["finish_time"]))) {
+				$error_mess["finish_time"]["msg"] = "正しい形式で入力してください。例) 00:00";
+				$error_mess["finish_time"]["exists"] = true;
+			}
 		}
 
 		// 時刻設定の整合性チェック
@@ -55,6 +63,8 @@ class Validate
 			&& !empty($reqAll["finish_time"])
 			&& empty($error_mess["start_time"]["msg"])
 			&& empty($error_mess["finish_time"]["msg"])
+			&& !$error_mess["start_time"]["exists"]
+			&& !$error_mess["finish_time"]["exists"]
 		) {
 			$start_time = new DateTime($reqAll["start_time"]);
 			$finish_time = new DateTime($reqAll["finish_time"]);
@@ -76,26 +86,5 @@ class Validate
 		}
 
 		return $error_mess;
-	}
-
-	/**
-	 * 時間形式のバリデーション
-	 *
-	 * @param [type] $input
-	 * @return string エラーメッセージ
-	 */
-	private function VaridateTime($input)
-	{
-		$ex_time = explode(":", $input);
-		if (count($ex_time) != 2) {
-			return "正しい形式で入力してください。例) 00:00";
-		} elseif (
-			!preg_match("/[0-1][0-9]|2[0-4]/", (string)$ex_time[0])
-			|| !preg_match("/[0-5][0-9]|60/", $ex_time[1])
-		) {
-			return "正しい時刻を入力してください。例) 00:00";
-		}
-
-		return "";
 	}
 }
