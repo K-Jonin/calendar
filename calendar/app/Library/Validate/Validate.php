@@ -42,7 +42,7 @@ class Validate
 
 		// 開始時刻
 		if (!empty($reqAll["start_time"])) {
-			if (preg_match("/^([01][0-9]|2[0-3]):[0-5][0-9]$/", trim($reqAll["start_time"]))) {
+			if (!preg_match("/^([01][0-9]|2[0-3]):[0-5][0-9]$/", trim($reqAll["start_time"]))) {
 				$error_mess["start_time"]["msg"] = "正しい形式で入力してください。例) 00:00";
 				$error_mess["start_time"]["exists"] = true;
 			}
@@ -50,7 +50,7 @@ class Validate
 
 		// 終了時刻
 		if (!empty($reqAll["finish_time"])) {
-			if (preg_match("/^([01][0-9]|2[0-3]):[0-5][0-9]$/", trim($reqAll["finish_time"]))) {
+			if (!preg_match("/^([01][0-9]|2[0-3]):[0-5][0-9]$/", trim($reqAll["finish_time"]))) {
 				$error_mess["finish_time"]["msg"] = "正しい形式で入力してください。例) 00:00";
 				$error_mess["finish_time"]["exists"] = true;
 			}
