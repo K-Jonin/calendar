@@ -3,7 +3,6 @@
 namespace App\Library\Validate;
 
 use DateTime;
-use Illuminate\Support\Facades\Log;
 
 class Validate
 {
