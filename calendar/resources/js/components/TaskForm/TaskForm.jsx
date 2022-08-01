@@ -1,20 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { convertLength } from "@mui/material/styles/cssUtils";
 
 export default function TaskForm({
     isVisibleTaskForm,
     setIsVisibleTaskForm,
-    generalDate,
+    postData,
+    setPostData,
 }) {
-    // ポスト送信するデータを格納
-    const [postData, setPostData] = useState({
-        title: "",
-        desc: "",
-        start_time: "",
-        finish_time: "",
-        task_date: generalDate,
-    });
-
     // エラーメッセージを格納
     const [errorMessage, setErrorMessage] = useState({
         isExistsError: false,
@@ -37,14 +30,26 @@ export default function TaskForm({
         e.preventDefault();
         // APi通信
         try {
-            const result = await axios.post("/api/calendar/register", postData);
+            let result = null;
+            if (isVisibleTaskForm.isEdit) {
+                console.log(postData);
+                result = await axios.put(
+                    `/api/calendar/update/${postData.id}`,
+                    postData
+                );
+            } else {
+                result = await axios.post("/api/calendar/register", postData);
+            }
             switch (result.status) {
+                case 200:
                 case 201:
                     window.location.reload();
                     break;
                 case 202:
                     setErrorMessage(result.data);
                     break;
+                case 403:
+                    console.log(result.data);
                 case 500:
                     console.log("ERROR");
                     break;
@@ -56,7 +61,11 @@ export default function TaskForm({
 
     // クリックで非表示
     const clickInvisible = () => {
-        setIsVisibleTaskForm(false);
+        setIsVisibleTaskForm({
+            ...isVisibleTaskForm,
+            visible: false,
+            isEdit: false,
+        });
         setPostData(initiarizeObject(postData));
         setErrorMessage(initiarizeObjectForErrorMessage(errorMessage));
     };
@@ -64,7 +73,7 @@ export default function TaskForm({
     return (
         <div
             className={`taskForm ${
-                isVisibleTaskForm ? "visible" : "invisible"
+                isVisibleTaskForm.visible ? "visible" : "invisible"
             }`}
         >
             <div className="bgDark" onClick={clickInvisible}></div>
@@ -84,7 +93,7 @@ export default function TaskForm({
                         placeholder="タイトルを入力"
                         className={errorMessage.title.exists ? "error" : ""}
                         onChange={(e) => handleChangeInput(e)}
-                        value={postData.title}
+                        value={postData.title ? postData.title : ""}
                     />
                     <span className="errorMessage">
                         {errorMessage.title.msg}
@@ -98,6 +107,7 @@ export default function TaskForm({
                         rows="10"
                         onChange={(e) => handleChangeInput(e)}
                         className={errorMessage.desc.exists ? "error" : ""}
+                        value={postData.desc ? postData.desc : ""}
                     ></textarea>
                     <span className="errorMessage">
                         {errorMessage.desc.msg}
@@ -110,6 +120,7 @@ export default function TaskForm({
                         name="start_time"
                         placeholder="例）00:00"
                         onChange={(e) => handleChangeInput(e)}
+                        value={postData.start_time ? postData.start_time : ""}
                         className={
                             errorMessage.start_time.exists ? "error" : ""
                         }
@@ -125,6 +136,7 @@ export default function TaskForm({
                         name="finish_time"
                         placeholder="例）00:00"
                         onChange={(e) => handleChangeInput(e)}
+                        value={postData.finish_time ? postData.finish_time : ""}
                         className={
                             errorMessage.finish_time.exists ? "error" : ""
                         }

@@ -73,13 +73,8 @@ class CalendarController extends Controller
 	{
 		// バリデーション
 		$error_mess = Validate::ValidateTaskInput($req->all());
-		if (
-			!empty($error_mess["title"])
-			|| !empty($error_mess["desc"])
-			|| !empty($error_mess["start_time"])
-			|| !empty($error_mess["finish_time"])
-		) {
-			return $error_mess;
+		if ($error_mess["isExistsError"]) {
+			return response()->json($error_mess, 202);
 		}
 
 		try {

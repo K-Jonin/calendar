@@ -2,7 +2,13 @@ import React, { useEffect, useState } from "react";
 import Task from "./Task";
 import axios from "axios";
 
-export default function TaskList({ generalDate, setIsVisibleTaskForm }) {
+export default function TaskList({
+    generalDate,
+    isVisibleTaskForm,
+    setIsVisibleTaskForm,
+    postData,
+    setPostData,
+}) {
     const [tasks, setTasks] = useState([]);
 
     // タスクの取得
@@ -22,9 +28,10 @@ export default function TaskList({ generalDate, setIsVisibleTaskForm }) {
         fetchTasks();
     }, [generalDate]);
 
-    // クリックで非表示
-    const clickVisible = () => {
-        setIsVisibleTaskForm(true);
+    // クリックで表示
+    const clickAddTaskButton = () => {
+        setPostData({ ...postData, task_date: generalDate });
+        setIsVisibleTaskForm({ ...isVisibleTaskForm, visible: true });
     };
 
     return (
@@ -32,10 +39,18 @@ export default function TaskList({ generalDate, setIsVisibleTaskForm }) {
             <div className="taskListBox">
                 <div className="taskWrapper">
                     {tasks.map((task) => (
-                        <Task task={task} key={task.id} />
+                        <Task
+                            task={task}
+                            key={task.id}
+                            isVisibleTaskForm={isVisibleTaskForm}
+                            setIsVisibleTaskForm={setIsVisibleTaskForm}
+                            postData={postData}
+                            setPostData={setPostData}
+                            generalDate={generalDate}
+                        />
                     ))}
                 </div>
-                <button className="addTaskButton" onClick={clickVisible}>
+                <button className="addTaskButton" onClick={clickAddTaskButton}>
                     +
                 </button>
             </div>

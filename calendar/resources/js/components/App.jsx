@@ -1,3 +1,4 @@
+import { SettingsPowerOutlined } from "@mui/icons-material";
 import moment from "moment";
 import React, { useState } from "react";
 import Calendar from "./Calendar/Calendar";
@@ -11,7 +12,18 @@ export default function App() {
         moment().format("YYYY-MM-DD")
     );
     // タスクフォームの表示状態
-    const [isVisibleTaskForm, setIsVisibleTaskForm] = useState(false);
+    const [isVisibleTaskForm, setIsVisibleTaskForm] = useState({
+        visible: false,
+        isEdit: false,
+    });
+    // ポスト送信するデータ
+    const [postData, setPostData] = useState({
+        title: "",
+        desc: "",
+        start_time: "",
+        finish_time: "",
+        task_date: "",
+    });
 
     return (
         <>
@@ -23,12 +35,16 @@ export default function App() {
             <TaskList
                 generalDate={generalDate}
                 setGeneralDate={setGeneralDate}
+                isVisibleTaskForm={isVisibleTaskForm}
                 setIsVisibleTaskForm={setIsVisibleTaskForm}
+                postData={postData}
+                setPostData={setPostData}
             />
             <TaskForm
                 isVisibleTaskForm={isVisibleTaskForm}
                 setIsVisibleTaskForm={setIsVisibleTaskForm}
-                generalDate={generalDate}
+                postData={postData}
+                setPostData={setPostData}
             />
         </>
     );
