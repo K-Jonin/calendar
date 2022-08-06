@@ -9,6 +9,7 @@ export default function SwitchMonthButtons({ generalDate, setGeneralDate }) {
      */
     const clickNextButton = () => {
         const pulsMonth = moment(generalDate + " 00:00:00")
+            .date("01")
             .add(1, "M")
             .format("YYYY-MM-DD");
         setGeneralDate(pulsMonth);
@@ -19,6 +20,7 @@ export default function SwitchMonthButtons({ generalDate, setGeneralDate }) {
      */
     const clickBackButton = () => {
         const minusMonth = moment(generalDate + " 00:00:00")
+            .date("01")
             .subtract(1, "M")
             .format("YYYY-MM-DD");
         setGeneralDate(minusMonth);

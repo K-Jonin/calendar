@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { result } from "lodash";
 
 export default function TaskForm({
     isVisibleTaskForm,
@@ -59,6 +58,7 @@ export default function TaskForm({
         switch (result.status) {
             case 200:
             case 201:
+                localStorage.setItem("generalDate", postData.task_date);
                 window.location.reload();
                 break;
             case 202:
