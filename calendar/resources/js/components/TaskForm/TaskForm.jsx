@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { result } from "lodash";
 
 export default function TaskForm({
     isVisibleTaskForm,
@@ -24,35 +25,52 @@ export default function TaskForm({
         }
     };
 
-    // 登録ボタンを押下
+    // 登録またはボタンを押下
     const handleSubmit = async (e) => {
         e.preventDefault();
         // APi通信
+        let result = null;
+        switch (e.currentTarget.name) {
+            case "btnInsertUpdate":
+                if (isVisibleTaskForm.isEdit) {
+                    // 更新
+                    result = await axios.put(
+                        `/api/calendar/update/${postData.id}`,
+                        postData
+                    );
+                } else {
+                    // 登録
+                    result = await axios.post(
+                        "/api/calendar/register",
+                        postData
+                    );
+                }
+                break;
+
+            case "btnDelete":
+                // 削除
+                result = await axios.put(`/api/calendar/delete/${postData.id}`);
+                break;
+
+            default:
+                throw "ERROR";
+        }
+
+        switch (result.status) {
+            case 200:
+            case 201:
+                window.location.reload();
+                break;
+            case 202:
+                setErrorMessage(result.data);
+                break;
+            case 403:
+                console.log(result.data);
+            case 500:
+                console.log("ERROR");
+                break;
+        }
         try {
-            let result = null;
-            if (isVisibleTaskForm.isEdit) {
-                console.log(postData);
-                result = await axios.put(
-                    `/api/calendar/update/${postData.id}`,
-                    postData
-                );
-            } else {
-                result = await axios.post("/api/calendar/register", postData);
-            }
-            switch (result.status) {
-                case 200:
-                case 201:
-                    window.location.reload();
-                    break;
-                case 202:
-                    setErrorMessage(result.data);
-                    break;
-                case 403:
-                    console.log(result.data);
-                case 500:
-                    console.log("ERROR");
-                    break;
-            }
         } catch (err) {
             console.log(err);
         }
@@ -76,7 +94,7 @@ export default function TaskForm({
             }`}
         >
             <div className="bgDark" onClick={clickInvisible}></div>
-            <form className="taskFormWrapper" onSubmit={(e) => handleSubmit(e)}>
+            <form className="taskFormWrapper">
                 <button
                     type="button"
                     onClick={clickInvisible}
@@ -144,7 +162,22 @@ export default function TaskForm({
                         {errorMessage.finish_time.msg}
                     </span>
                 </p>
-                <button type="submit">登録</button>
+                <button
+                    type="submit"
+                    name="btnInsertUpdate"
+                    onClick={(e) => handleSubmit(e)}
+                >
+                    {isVisibleTaskForm.isEdit ? "更新" : "登録"}
+                </button>
+                {isVisibleTaskForm.isEdit && (
+                    <button
+                        type="submit"
+                        name="btnDelete"
+                        onClick={(e) => handleSubmit(e)}
+                    >
+                        削除
+                    </button>
+                )}
             </form>
         </div>
     );

@@ -25,8 +25,18 @@ export default function Task({
     return (
         <>
             <div className="task" onClick={clickTask}>
-                <p>{task.title}</p>
+                <p>{showInPartOfTitle(task.title)}</p>
             </div>
         </>
     );
+}
+
+/**
+ * タイトルが9字超過で一部を非表示
+ * @param {string} title
+ * @returns {string} 処理後のタイトル
+ */
+function showInPartOfTitle(title) {
+    const result = title.length > 10 ? `${title.substring(0, 8)}...` : title;
+    return result;
 }
