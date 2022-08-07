@@ -21,7 +21,18 @@ a {
   text-decoration: none;
 }
 
-.button, body #app .taskForm .taskFormWrapper .closeButton, body #app .taskList .taskListBox .addTaskButton {
+input, textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font: inherit;
+  outline: none;
+}
+
+.buttonInisiarize, body #app .taskForm .taskFormWrapper .taskFormInner .buttons button, .button, body #app .taskForm .taskFormWrapper .closeButton, body #app .taskList .taskListBox .addTaskButton {
   display: block;
   background: none;
   border: none;
@@ -29,6 +40,9 @@ a {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+}
+
+.button, body #app .taskForm .taskFormWrapper .closeButton, body #app .taskList .taskListBox .addTaskButton {
   position: absolute;
   top: 10px;
   right: 10px;
@@ -76,7 +90,7 @@ body #app .header h2 div {
   left: 50%;
   text-align: center;
   transform: translate(-50%, -50%);
-  font-family: "Noto Sans JP", sans-seri;
+  font-family: "Noto Sans JP", sans-serif;
   z-index: 10;
 }
 body #app .header h2 div .month {
@@ -153,7 +167,7 @@ body #app .calendar table th, body #app .calendar table td {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "Noto Sans JP", sans-seri;
+  font-family: "Noto Sans JP", sans-serif;
 }
 body #app .calendar table th {
   font-size: 1.5rem;
@@ -220,7 +234,7 @@ body #app .taskList .taskListBox .taskWrapper .task {
   margin-bottom: 15px;
   text-align: center;
   line-height: 60px;
-  font-family: "Noto Sans JP", sans-seri;
+  font-family: "Noto Sans JP", sans-serif;
   font-size: 1.1rem;
   font-weight: 600;
   letter-spacing: 1px;
@@ -259,12 +273,11 @@ body #app .taskForm .bgDark {
 body #app .taskForm .taskFormWrapper {
   width: 500px;
   height: 500px;
-  padding: 10px;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #fff;
+  background-color: #D9CCCC;
   border-radius: 20px;
   z-index: 100;
 }
@@ -273,10 +286,68 @@ body #app .taskForm .taskFormWrapper .closeButton {
   font-size: 18px;
   font-weight: 600;
   color: #fff;
-  background-color: #333;
+  background-color: #000;
 }
-body #app .taskForm .taskFormWrapper .error {
+body #app .taskForm .taskFormWrapper .taskFormInner {
+  width: 70%;
+  margin: 70px auto 0;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner .error {
   background-color: pink;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner p {
+  margin-bottom: 1rem;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner p label {
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner p input {
+  margin-left: 0.6rem;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 4px 5px 5px -4px #777;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner p textarea {
+  width: 100%;
+  height: 5.2rem;
+  resize: none;
+  display: block;
+  background-color: #fff;
+  box-shadow: 4px 5px 5px -4px #777;
+  border-radius: 5px;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner .title input {
+  width: calc(100% - 5.4rem);
+}
+body #app .taskForm .taskFormWrapper .taskFormInner .startTime input, body #app .taskForm .taskFormWrapper .taskFormInner .finishTime input {
+  width: 4rem;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner .buttons {
+  margin-top: 35px;
+  display: flex;
+  justify-content: center;
+  flex-flow: row-reverse;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner .buttons button {
+  display: block;
+  margin: 0px 10px;
+  padding: 3px 15px;
+  font-family: "Noto Sans JP", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #fff;
+  background-color: #000;
+  border-radius: 20px;
+  box-shadow: 1px 1px 2px 2px #999;
+  transform: translate(-2px, -2px);
+  cursor: pointer;
+  transition: 0.2s;
+}
+body #app .taskForm .taskFormWrapper .taskFormInner .buttons button:hover {
+  box-shadow: none;
+  transform: translate(0px, 0px);
 }
 body #app .visible {
   display: block;

@@ -102,82 +102,91 @@ export default function TaskForm({
                 >
                     ｘ
                 </button>
-                <p className="title">
-                    <label>タイトル</label>
-                    <input
-                        type="text"
-                        name="title"
-                        placeholder="タイトルを入力"
-                        className={errorMessage.title.exists ? "error" : ""}
-                        onChange={(e) => handleChangeInput(e)}
-                        value={postData.title ? postData.title : ""}
-                    />
-                    <span className="errorMessage">
-                        {errorMessage.title.msg}
-                    </span>
-                </p>
-                <p className="disc">
-                    <label>説明</label>
-                    <textarea
-                        name="desc"
-                        cols="30"
-                        rows="10"
-                        onChange={(e) => handleChangeInput(e)}
-                        className={errorMessage.desc.exists ? "error" : ""}
-                        value={postData.desc ? postData.desc : ""}
-                    ></textarea>
-                    <span className="errorMessage">
-                        {errorMessage.desc.msg}
-                    </span>
-                </p>
-                <p>
-                    <label>開始時刻</label>
-                    <input
-                        type="text"
-                        name="start_time"
-                        placeholder="例）00:00"
-                        onChange={(e) => handleChangeInput(e)}
-                        value={postData.start_time ? postData.start_time : ""}
-                        className={
-                            errorMessage.start_time.exists ? "error" : ""
-                        }
-                    />
-                    <span className="errorMessage">
-                        {errorMessage.start_time.msg}
-                    </span>
-                </p>
-                <p>
-                    <label>終了時刻</label>
-                    <input
-                        type="text"
-                        name="finish_time"
-                        placeholder="例）00:00"
-                        onChange={(e) => handleChangeInput(e)}
-                        value={postData.finish_time ? postData.finish_time : ""}
-                        className={
-                            errorMessage.finish_time.exists ? "error" : ""
-                        }
-                    />
-                    <span className="errorMessage">
-                        {errorMessage.finish_time.msg}
-                    </span>
-                </p>
-                <button
-                    type="submit"
-                    name="btnInsertUpdate"
-                    onClick={(e) => handleSubmit(e)}
-                >
-                    {isVisibleTaskForm.isEdit ? "更新" : "登録"}
-                </button>
-                {isVisibleTaskForm.isEdit && (
-                    <button
-                        type="submit"
-                        name="btnDelete"
-                        onClick={(e) => handleSubmit(e)}
-                    >
-                        削除
-                    </button>
-                )}
+                <div className="taskFormInner">
+                    <p className="title">
+                        <label>タイトル</label>
+                        <input
+                            type="text"
+                            name="title"
+                            placeholder="タイトルを入力"
+                            className={errorMessage.title.exists ? "error" : ""}
+                            onChange={(e) => handleChangeInput(e)}
+                            value={postData.title ? postData.title : ""}
+                        />
+                        <span className="errorMessage">
+                            {errorMessage.title.msg}
+                        </span>
+                    </p>
+                    <p className="disc">
+                        <label>説明</label>
+                        <textarea
+                            name="desc"
+                            placeholder="説明を入力"
+                            onChange={(e) => handleChangeInput(e)}
+                            className={errorMessage.desc.exists ? "error" : ""}
+                            value={postData.desc ? postData.desc : ""}
+                        ></textarea>
+                        <span className="errorMessage">
+                            {errorMessage.desc.msg}
+                        </span>
+                    </p>
+                    <p className="startTime">
+                        <label>開始時刻</label>
+                        <input
+                            type="text"
+                            name="start_time"
+                            placeholder="00:00"
+                            onChange={(e) => handleChangeInput(e)}
+                            value={
+                                postData.start_time ? postData.start_time : ""
+                            }
+                            className={
+                                errorMessage.start_time.exists ? "error" : ""
+                            }
+                        />
+                        <span className="errorMessage">
+                            {errorMessage.start_time.msg}
+                        </span>
+                    </p>
+                    <p className="finishTime">
+                        <label>終了時刻</label>
+                        <input
+                            type="text"
+                            name="finish_time"
+                            placeholder="00:00"
+                            onChange={(e) => handleChangeInput(e)}
+                            value={
+                                postData.finish_time ? postData.finish_time : ""
+                            }
+                            className={
+                                errorMessage.finish_time.exists ? "error" : ""
+                            }
+                        />
+                        <span className="errorMessage">
+                            {errorMessage.finish_time.msg}
+                        </span>
+                    </p>
+                    <div className="buttons">
+                        <button
+                            type="submit"
+                            name="btnInsertUpdate"
+                            className="insertUpdate"
+                            onClick={(e) => handleSubmit(e)}
+                        >
+                            {isVisibleTaskForm.isEdit ? "更新" : "登録"}
+                        </button>
+                        {isVisibleTaskForm.isEdit && (
+                            <button
+                                type="submit"
+                                name="btnDelete"
+                                className="delete"
+                                onClick={(e) => handleSubmit(e)}
+                            >
+                                削除
+                            </button>
+                        )}
+                    </div>
+                </div>
             </form>
         </div>
     );
